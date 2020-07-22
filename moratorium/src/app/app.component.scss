@@ -1,0 +1,58 @@
+mat-slider {
+  width: 300px;
+}
+
+.div1 {
+  padding-top: 1rem;
+
+  .div2 {
+    background-color: gray;  
+    padding-bottom: 1rem;
+
+    .div3 {
+      padding: 1rem; 
+      color: white;
+      padding-bottom: 0;
+
+      p {
+        background-color: #00BCD4;
+        padding: .8rem;
+      }
+    }
+
+    .div4 {
+      padding: 0 2rem 0 2rem;
+      font-size: 11px; 
+      font-weight: 570;
+
+      .div5 {
+        background-color: white; 
+        margin-bottom: .7rem; 
+        height: 2.5rem;
+
+        p {
+          background-color: white;
+          padding-top: 5px;
+        }
+        select, input {
+          height: 33px;
+          background: gainsboro; 
+          margin-top: 4px; 
+          border: none;
+        }
+      }
+    }
+    button {
+      background: white; 
+      border: none;
+      font-size: 9px; 
+      width: 100%;
+    }
+    .div6 {
+      padding-top: 1rem; 
+      width: 100%; 
+      padding-left: 0;  
+      padding-right: 0;
+    }
+  }
+}

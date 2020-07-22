@@ -1,0 +1,93 @@
+<!-- 
+
+
+<mat-checkbox [(ngModel)]="recursive">Recursive</mat-checkbox>
+<mat-card>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-nested-tree-node *matTreeNodeDef="let node">
+      <li>
+        <div class="mat-tree-node">  {{node.item}}</div>
+      </li>
+    </mat-nested-tree-node>
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChildren">
+        <li class="example-tree-container">
+          <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle
+                    [matTreeNodeToggleRecursive]="recursive"
+                  [attr.aria-label]="'toggle ' + node.filename">
+              <mat-icon>
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            {{node.item}}
+        </div>
+        <ul class="example-tree-nested-node">
+          <div  *ngIf="treeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+          </div>
+        </ul>
+      </li>
+      
+    </mat-nested-tree-node>
+  </mat-tree>
+</mat-card> -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 div1">
+            <div class="row div2">
+                <div class="col-12 div3">
+                    <p>Moratorium Option Calculator</p>
+                </div>
+                <div class="col-12" style="color: white;">
+                    {{value}}
+                </div>
+                <div class="col-12">
+                    <mat-slider [(ngModel)]="value"> </mat-slider>
+                </div>
+                <div class="col-12 div4">
+                   <div *ngFor = "let arr of detailsArr">
+                    <div class="row div5">
+                        <p class="col-6">{{arr}}</p>
+                        <input class="col-6" type="text" *ngIf = "arr !=='Balance POS' && arr !== 'Balance Tenure (in Months)' && arr !== 'Compound Interest option'">
+                         <input class="col-6" matInput type="number" [(ngModel)]="value" style="
+                         background: black;color: white;" *ngIf = "arr =='Balance POS' || arr == 'Balance Tenure (in Months)'">
+                        <select *ngIf = 'arr == "Compound Interest option"' style="width: 49%;">
+                            <option value="">After Moratorium Period</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                   </div>
+                </div>
+                <div class="col-12">
+                    <p style="color: white;">Moratorium Months</p>
+                </div>
+                <div class="col-3">
+                    <button>Not Availed</button>
+                </div>
+                <div class="col-3">
+                    <button style="background: #00BCD4; color: white;">1</button>
+                </div>
+                <div class="col-3">
+                    <button>2</button>
+                </div>
+                <div class="col-3">
+                    <button>3</button>
+                </div>
+                <div class="col-4">
+                    
+                </div>
+                <div class="col-4" style="padding-top: 1rem; width: 100%; padding-left: 0;  padding-right: 0;">
+                    <button style="background: #ea9b0a; border: none;font-size: 9px; width: 100%;">Calculator</button>
+                </div>
+                <div class="col-4">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+<!-- <router-outlet></router-outlet>  -->
