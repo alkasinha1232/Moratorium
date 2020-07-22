@@ -1,54 +1,115 @@
-import { Component, OnInit, ChangeDetectorRef, Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs/';
 import {NestedTreeControl} from '@angular/cdk/tree';
-// import { MatTreeNestedDataSource } from '@angular/material/tree';
-// import {MatTreeFlattener, MatTreeNestedDataSource} from '@angular/material/tree';
-import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
-// import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/';
-import {merge} from 'rxjs/';
-// import {map} from 'rxjs/';
+import {Component, Injectable} from '@angular/core';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
+import {BehaviorSubject} from 'rxjs';
 
-// export class GameNode {
-//   children: BehaviorSubject<GameNode[]>;
-//   constructor(public item: string, children?: GameNode[], public parent?: GameNode) {
-//     this.children = new BehaviorSubject(children === undefined ? [] : children);
-//   }
-// }
 
-// const TREE_DATA = [
-//   new GameNode('Simulation', [
-//     new GameNode('Factorio'),
-//     new GameNode('Oxygen not included'),
-//   ]),
-//   new GameNode('Indie', [
-//     new GameNode(`Don't Starve`, [
-//       new GameNode(`Region of Giants`),
-//       new GameNode(`Together`),
-//       new GameNode(`Shipwrecked`)
-//     ]),
-//     new GameNode('Terraria'),
-//     new GameNode('Starbound'),
-//     new GameNode('Dungeon of the Endless')
-//   ]),
-//   new GameNode('Action', [
-//     new GameNode('Overcooked')
-//   ]),
-//   new GameNode('Strategy', [
-//     new GameNode('Rise to ruins')
-//   ]),
-//   new GameNode('RPG', [
-//     new GameNode('Magicka', [
-//       new GameNode('Magicka 1'),
-//       new GameNode('Magicka 2')
-//     ])
-//   ])
-// ];
+export class FileNode {
+  children: FileNode[];
+  filename: string;
+  type: any;
+}
+const TREE_DATA = JSON.stringify({
+  Wireframe: [
+    [
+      {
+        "id": 10,
+        "name": "job6",
+        "parentid": 8,
+        "chainJob": "HKACLAMC;LA",
+        "index": 3,
+        "external": false,
+        "children": null
+      },
+
+      {
+        "id": 10,
+        "name": "job6",
+        "parentid": 9,
+        "chainJob": "ASDLJBCJNDS CMS ",
+        "index": 2,
+        "external": false,
+        "children": null
+      },
+     ],
+    {
+      "id": 6,
+      "name": "job1",
+      "parentid": 0,
+      "chainJob": "MDKSC KSJ DVKJNKJSN",
+      "index": 1,
+      "external": false,
+      "children": null
+    },
+  {
+        "id": 7,
+        "name": "job2",
+        "parentid": 6,
+        "chainJob": "AFSJDKCHNAKND",
+        "index": 1,
+        "external": false,
+        "children": null
+      },
+      {
+        "id": 8,
+        "name": "job3",
+        "parentid": 7,
+        "chainJob": "HKACLAMC;LA",
+        "index": 2,
+        "external": false,
+        "children": null
+      },
+      {
+        "id": 9,
+        "name": "job4",
+        "parentid": 6,
+        "chainJob": "NEFCKS VKJNVW",
+        "index": 1,
+        "external": false,
+        "children": null
+      },    
+  ],
+
+});
+
+@Injectable()
+export class FileDatabase {
+  dataChange = new BehaviorSubject<FileNode[]>([]);
+
+  get data(): FileNode[] { return this.dataChange.value; }
+
+  constructor() {
+    this.initialize();
+  }
+
+  initialize() {
+    const dataObject = JSON.parse(TREE_DATA);
+    const data = this.buildFileTree(dataObject, 0);
+    this.dataChange.next(data);
+  }
+  buildFileTree(obj: {[key: string]: any}, level: number): FileNode[] {
+    return Object.keys(obj).reduce<FileNode[]>((accumulator, key) => {
+      const value1 = obj[key];
+      const node = new FileNode();
+      node.filename = key;
+
+      if (value1 != null) {
+        if (typeof value1 === 'object') {
+          node.children = this.buildFileTree(value1, level + 1);
+        } else {
+          node.type = value1;
+        }
+      }
+      return accumulator.concat(node);
+    }, []);
+  }
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers:[FileDatabase]
 })
 export class AppComponent{
   title = 'moratorium';
@@ -58,81 +119,18 @@ export class AppComponent{
 
   detailsArr = ['Tenure', 'ROI', 'EMIs paid till date', 'Balance POS', 'Balance Tenure (in Months)', 'Compound Interest option'];
  
-  // data = [
-  //   {
-  //     "id": 7,
-  //     "name": "job2",
-  //     "parentid": 6,
-  //     "chainJob": "AFSJDKCHNAKND",
-  //     "index": 1,
-  //     "external": false,
-  //     "children": null
-  //   },
-  //   {
-  //     "id": 8,
-  //     "name": "job3",
-  //     "parentid": 7,
-  //     "chainJob": "HKACLAMC;LA",
-  //     "index": 2,
-  //     "external": false,
-  //     "children": null
-  //   },
-  //   {
-  //     "id": 10,
-  //     "name": "job6",
-  //     "parentid": 8,
-  //     "chainJob": "HKACLAMC;LA",
-  //     "index": 3,
-  //     "external": false,
-  //     "children": null
-  //   },
-  //   {
-  //     "id": 9,
-  //     "name": "job4",
-  //     "parentid": 6,
-  //     "chainJob": "NEFCKS VKJNVW",
-  //     "index": 1,
-  //     "external": false,
-  //     "children": null
-  //   },
-  //   {
-  //     "id": 10,
-  //     "name": "job6",
-  //     "parentid": 9,
-  //     "chainJob": "ASDLJBCJNDS CMS ",
-  //     "index": 2,
-  //     "external": false,
-  //     "children": null
-  //   },
-  //   {
-  //     "id": 6,
-  //     "name": "job1",
-  //     "parentid": 0,
-  //     "chainJob": "MDKSC KSJ DVKJNKJSN",
-  //     "index": 1,
-  //     "external": false,
-  //     "children": null
-  //   }
-  // ]
-  // recursive: boolean = false;
-  // levels = new Map<GameNode, number>();
-  // treeControl: NestedTreeControl<GameNode>;
+  nestedTreeControl: NestedTreeControl<FileNode>;
+  nestedDataSource: MatTreeNestedDataSource<FileNode>;
 
-  // dataSource: MatTreeNestedDataSource<GameNode>;
+  constructor(database: FileDatabase) {
+    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
+    this.nestedDataSource = new MatTreeNestedDataSource();
 
-  // constructor(private changeDetectorRef: ChangeDetectorRef) {
-  
-  //   this.treeControl = new NestedTreeControl<GameNode>(this.getChildren);
-  //   this.dataSource = new MatTreeNestedDataSource();
-  //   this.dataSource.data = TREE_DATA;
-  // }
+    database.dataChange.subscribe(data => this.nestedDataSource.data = data);
+  }
 
-  // getChildren = (node: GameNode) => {
-  //   return node.children;
-  // };
+  hasNestedChild = (_: number, nodeData: FileNode) => !nodeData.type;
 
-  // hasChildren = (index: number, node: GameNode) => {
-  //   return node.children.value.length > 0;
-  // }
+  private _getChildren = (node: FileNode) => node.children;
 
-}
+  }

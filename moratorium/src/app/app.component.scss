@@ -3,7 +3,7 @@ mat-slider {
 }
 
 .div1 {
-  padding-top: 1rem;
+  // padding-top: 1rem;
 
   .div2 {
     background-color: gray;  
@@ -55,4 +55,21 @@ mat-slider {
       padding-right: 0;
     }
   }
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.ans {
+  color: #087b0d;
+  font-weight: 600;
+  font-size: 1rem;
 }
